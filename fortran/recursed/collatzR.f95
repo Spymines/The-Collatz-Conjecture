@@ -19,6 +19,11 @@ interface
                 INTEGER :: item
                 INTEGER(8) :: counter
         END FUNCTION inArray
+
+        RECURSIVE subroutine collatzLen(num, ic)
+                INTEGER(8) :: num
+                INTEGER::  ic
+        end subroutine collatzLen
 end interface
 
 
@@ -31,18 +36,11 @@ end do
 
 temp = 5000000000_8
 j = 2_8
-do while (j < temp)
+do while (j <= temp)
 
 i = j
 ic=0
-do while ( i /= 1 )  
-        if ( mod(i,2) == 0 ) then  ! If even divide by 2
-                i = i / 2
-        else
-                i = i * 3 + 1            ! If odd multiply by 3 and add 1
-        endif
-                ic = ic + 1                ! Increment counter 
-enddo 
+call collatzLen(i, ic)
 
 if(ic > largestLens(1)) then
         if(.not. inArray(largestLens,ic)) then
@@ -124,13 +122,22 @@ LOGICAL FUNCTION inArray(array, item) result(found)
 
 END FUNCTION inArray
 
+RECURSIVE subroutine collatzLen(num, ic)
+        INTEGER(8) :: num
+        INTEGER ::  ic 
+        if (num == 1) then
+                return
+        else if ( mod(num,2) == 0 ) then  ! If even divide by 2
+                call collatzLen(num/2, ic)
+                ic = ic + 1
+                return
+        else
+                call collatzLen(num*3+1, ic) ! If odd multiply by 3 and add 1
+                ic = ic + 1
+                return  
+        endif
 
-
-
-
-
-
-
+end subroutine collatzLen
 
 
 
