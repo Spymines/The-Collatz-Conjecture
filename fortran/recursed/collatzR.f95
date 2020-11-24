@@ -26,7 +26,7 @@ interface
         end subroutine collatzLen
 end interface
 
-
+!Initializes all of the values in both arrays to 0
 counter = 1
 do while (counter <= 10)
         largestLens(counter) = 0_8
@@ -34,14 +34,18 @@ do while (counter <= 10)
         counter = counter + 1
 end do 
 
+!Sets the values to be checked
 temp = 5000000000_8
 j = 2_8
 do while (j <= temp)
 
+!Calls the recursive function to get the ic
 i = j
 ic=0
 call collatzLen(i, ic)
 
+!Adds the length to the largestLens array and the value to the topVals array if
+!the length is larger than the smallest value in largestLens 
 if(ic > largestLens(1)) then
         if(.not. inArray(largestLens,ic)) then
                 largestLens(1) = ic
@@ -54,6 +58,8 @@ endif
 j = j + 1
 enddo
 
+
+!Prints the output sorted based on length and value, sorting in between
 print*,"Sorted based on ascending length:"
 counter = 1
 do while (counter <= 10)
@@ -72,12 +78,11 @@ do while (counter <= 10)
         counter = counter + 1
 enddo
 
-
-!print*, largestLens(1:10)
-!print*, topVals(1:10)
-
 end program collatz
 
+
+!Subroutine that sorts array a and makes the same changes in b to keep the
+!values associated with eachother
 SUBROUTINE Bubble_Sort(a, b)
   Integer(8), INTENT(in out), DIMENSION(:) :: a
   Integer(8), INTENT(in out), DIMENSION(:) :: b
@@ -104,7 +109,8 @@ SUBROUTINE Bubble_Sort(a, b)
   END DO
 END SUBROUTINE Bubble_Sort
 
-
+!Function that checks to see if the passed in item is in the passed in array and
+!returns a logical
 LOGICAL FUNCTION inArray(array, item) result(found)
         INTEGER(8), INTENT(in), DIMENSION(:) :: array
         INTEGER :: item
@@ -122,6 +128,8 @@ LOGICAL FUNCTION inArray(array, item) result(found)
 
 END FUNCTION inArray
 
+!Recursive collatz function that is passed a number and the ic variable with the
+!goal of getting the sequence length
 RECURSIVE subroutine collatzLen(num, ic)
         INTEGER(8) :: num
         INTEGER ::  ic 
@@ -136,7 +144,6 @@ RECURSIVE subroutine collatzLen(num, ic)
                 ic = ic + 1
                 return  
         endif
-
 end subroutine collatzLen
 
 

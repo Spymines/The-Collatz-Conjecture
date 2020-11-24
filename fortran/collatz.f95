@@ -22,6 +22,7 @@ interface
 end interface
 
 
+!Sets all of the array values to 0
 counter = 1
 do while (counter <= 10)
         largestLens(counter) = 0_8
@@ -29,12 +30,16 @@ do while (counter <= 10)
         counter = counter + 1
 end do 
 
+!Sets the limits to be checked
 temp = 5000000000_8
 j = 2_8
 do while (j < temp)
 
+
+!Sets i to j to be used in the calculations
 i = j
 ic=0
+!Loops to calculate the collatz length of j 
 do while ( i /= 1 )  
         if ( mod(i,2) == 0 ) then  ! If even divide by 2
                 i = i / 2
@@ -44,6 +49,8 @@ do while ( i /= 1 )
                 ic = ic + 1                ! Increment counter 
 enddo 
 
+!Adds the current value to the array and sorts it
+!if the value is larger than the smallest value in largestLens
 if(ic > largestLens(1)) then
         if(.not. inArray(largestLens,ic)) then
                 largestLens(1) = ic
@@ -56,6 +63,8 @@ endif
 j = j + 1
 enddo
 
+!Prints the output sorted based on length and value respectively, resorting
+!between the two
 print*,"Sorted based on ascending length:"
 counter = 1
 do while (counter <= 10)
@@ -74,12 +83,10 @@ do while (counter <= 10)
         counter = counter + 1
 enddo
 
-
-!print*, largestLens(1:10)
-!print*, topVals(1:10)
-
 end program collatz
 
+!Subroutine that sorts array a and makes the same swaps in 
+!array b to keep the values associated with eachother
 SUBROUTINE Bubble_Sort(a, b)
   Integer(8), INTENT(in out), DIMENSION(:) :: a
   Integer(8), INTENT(in out), DIMENSION(:) :: b
@@ -106,7 +113,8 @@ SUBROUTINE Bubble_Sort(a, b)
   END DO
 END SUBROUTINE Bubble_Sort
 
-
+!Function that gets passed an array and an item and
+!returns a logical based on if the item is in the array
 LOGICAL FUNCTION inArray(array, item) result(found)
         INTEGER(8), INTENT(in), DIMENSION(:) :: array
         INTEGER :: item
@@ -120,8 +128,6 @@ LOGICAL FUNCTION inArray(array, item) result(found)
                 end if
                 counter = counter + 1
         enddo
-
-
 END FUNCTION inArray
 
 
